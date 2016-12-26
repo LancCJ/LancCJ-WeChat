@@ -1,0 +1,19 @@
+订阅消息
+    <xml>
+        <ToUserName><![CDATA[gh_3073c4584219]]></ToUserName>
+        <FromUserName><![CDATA[olmNXwQX15hlBTCSifNYbfVo3DiI]]></FromUserName>
+        <CreateTime>1482756585</CreateTime>
+        <MsgType><![CDATA[event]]></MsgType>
+        <Event><![CDATA[subscribe]]></Event>
+        <EventKey><![CDATA[]]></EventKey>
+    </xml>
+ 文本消息
+    <xml><ToUserName><![CDATA[gh_3073c4584219]]></ToUserName>
+    <FromUserName><![CDATA[olmNXwQX15hlBTCSifNYbfVo3DiI]]></FromUserName>
+    <CreateTime>1482756901</CreateTime>
+    <MsgType><![CDATA[text]]></MsgType>
+    <Content><![CDATA[我是文本消息]]></Content>
+    <MsgId>6368392398236076053</MsgId>
+    </xml>
+
+
