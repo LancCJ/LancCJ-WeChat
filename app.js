@@ -11,8 +11,6 @@ var config = {
 }
 
 var app=new Koa();
-
-app.use(Validation(config));
-
+app.use(Validation(config.wechat));
 app.listen(1234);//监听端口
 console.log('LancCJ公众号服务器已经启动');
