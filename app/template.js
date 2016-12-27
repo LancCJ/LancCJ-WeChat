@@ -13,22 +13,27 @@ var tpl=heredoc(function(){/*
      <% if (msgType === 'text') {%>
      <Content><![CDATA[<%= content %>]]></Content>
      <% }else if (msgType === 'image') {%>
-     <PicUrl><![CDATA[<%= content.picUrl %>]]></PicUrl>
-     <MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
+     <Image>
+         <MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
+     </Image>
      <% }else if (msgType === 'voice') {%>
-     <MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
-     <Format><![CDATA[<%= content.format %>]]></Format>
+     <Voice>
+        <MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
+     </Voice>
      <% }else if (msgType === 'video') {%>
-     <MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
-     <ThumbMediaId><![CDATA[<%= content.thumbMediaid %>]]></ThumbMediaId>
-     <% }else if (msgType === 'shortvideo') {%>
-     <MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
-     <ThumbMediaId><![CDATA[<%= content.thumbMediaid %>]]></ThumbMediaId>
-     <% }else if (msgType === 'location') {%>
-     <Location_X><%= content.location_X %></Location_X>
-     <Location_Y><%= content.location_Y %></Location_Y>
-     <Scale><%= content.scale %></Scale>
-     <Label><![CDATA[<%= content.label %>]]></Label>
+     <Video>
+        <MediaId><![CDATA[<%= content.mediaId %>]]></MediaId>
+        <Title><![CDATA[<%= content.title %>]]></Title>
+        <Description><![CDATA[<%= content.description %>]]></Description>
+     </Video>
+     <% }else if (msgType === 'music') {%>
+     <Music>
+         <Title><![CDATA[<%= content.title %>]]></Title>
+         <Description><![CDATA[<%= content.description %>]]></Description>
+         <MusicUrl><![CDATA[<%= content.musicUrl %>]]></MusicUrl>
+         <HQMusicUrl><![CDATA[<%= content.hQMusicurl %>]]></HQMusicUrl>
+         <ThumbMediaId><![CDATA[<%= content.thumbMediaid %>]]></ThumbMediaId>
+     </Music>
      <% }else if (msgType === 'news') {%>
      <ArticleCount><![CDATA[<%= content.length %>]]></ArticleCount>
      <Articles>
@@ -41,10 +46,6 @@ var tpl=heredoc(function(){/*
         </item>
         <%})%>
      </Articles>
-     <% }else if (msgType === 'link') {%>
-     <Title><![CDATA[<%= content.title %>]]></Title>
-     <Description><![CDATA[<%= content.description %>]]></Description>
-     <Url><![CDATA[<%= content.url %>]]></Url>
      <% }%>
  </xml>
 */})
