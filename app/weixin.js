@@ -1,6 +1,10 @@
 'use strict'
 
 var Constant=require('../common/constant')
+var config=require('../config/config')
+var Wechat=require('./wechat')
+var wechatApi=new Wechat(config.wechat)
+
 
 exports.reply=function *(next) {
     var message=this.weixin
@@ -27,7 +31,7 @@ exports.reply=function *(next) {
         }
     }else if(message.MsgType==='text'){
         var content=message.Content
-        var reply='额，不清楚'+content+'很难理解'
+        var reply='额，不清楚'+content+'很难理解，麻烦查看回复规则吧'
 
         if(content==='1'){
             reply='11111'
@@ -51,6 +55,15 @@ exports.reply=function *(next) {
                 //     url:'http://www.tvbmove.com/'
                 // }
             ]
+        }else if(content==='5'){
+            var data=yield wechatApi.uploadMaterial('image',__dirname+'/../doc/1.jpeg')
+
+            console.log(data)
+
+            reply={
+                type:'image',
+                mediaId:data.media_id
+            }
         }
 
         this.body=reply
