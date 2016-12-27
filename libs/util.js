@@ -3,9 +3,9 @@
 var fs=require('fs')
 var Promise=require('bluebird')
 
-exports.readFileAsync=function(fpath,encoding){
+exports.readFileAsync=function(fpath){
     return new Promise(function(resolve,reject){
-        fs.readFile(fpath,encoding,function(err,content){
+        fs.readFile(fpath,function(err,content){
             if(err) reject(err)
             else resolve(content)
         })

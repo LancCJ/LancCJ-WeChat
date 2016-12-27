@@ -3,8 +3,10 @@ var Promise=require('bluebird')
 var request=Promise.promisify(require('request'))
 var prefix='https://api.weixin.qq.com/cgi-bin/'
 var api={
-    accessToken:prefix+'token?grant_type=client_credential'
+    accessToken:prefix+'token?grant_type=client_credential',
+    upload:'media/upload?access_token=ACCESS_TOKEN&type=TYPE'
 }
+var util=require('./util')
 
 
 function WeChat(opts){
@@ -24,12 +26,14 @@ function WeChat(opts){
             }
 
             if(that.isValidAccessToken(data)){
-                Promise.resolve(data)
+                return Promise.resolve(data)
             }else{
                 return that.updateAccessToken()
             }
         })
         .then(function(data){
+            //console.log('读取')
+            //console.log(data)
             that.access_token=data.access_token
             that.expires_in=data.expires_in
 
@@ -73,6 +77,22 @@ WeChat.prototype.isValidAccessToken=function(data){
         return false
     }
 
+}
+
+
+WeChat.prototype.reply=function(){
+    var content = this.body
+    var message = this.weixin
+    var xml = util.tpl(content,message)
+    this.status=200
+    this.type='application/xml'
+
+    console.log('               返回消息              ');
+    console.log('↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓');
+    console.log(xml);
+    console.log('↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓');
+
+    this.body=xml
 }
 
 module.exports=WeChat

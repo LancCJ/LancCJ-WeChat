@@ -7,12 +7,14 @@ var util=require('./util')
 var request=Promise.promisify(require('request'))
 
 var WeChat=require('./wechat')
+var Constant=require('../common/constant')
 
-module.exports=function(opts){
+module.exports=function(opts,handler){
 
     var wehcat=new WeChat(opts)
 
     return function *(next){
+        var that=this
         var token=opts.token
         var nonce=this.query.nonce
         var signature=this.query.signature
@@ -26,11 +28,11 @@ module.exports=function(opts){
             if(sha===signature){
                 this.body=echostr+''
             }else{
-                this.body='您的请求不是来自微信，兄台别搞啦！'
+                this.body=Constant.NO_WECHAT_SERVER
             }
         }else if(this.method==='POST'){
             if(sha!==signature){
-                this.body='您的请求不是来自微信，兄台别搞啦！'
+                this.body=Constant.NO_WECHAT_SERVER
                 return false
             }
 
@@ -44,11 +46,20 @@ module.exports=function(opts){
 
             var content=yield util.parseXMLAsync(data)
 
-            console.log(content);
+            //console.log(content);
 
             var message=util.formatMessage(content)
 
+            console.log('               接收到消息              ');
+            console.log('↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓');
             console.log(message);
+            console.log('↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓');
+
+            this.weixin=message
+
+            yield handler.call(this,next)
+
+            wehcat.reply.call(this)
 
         }
     }
