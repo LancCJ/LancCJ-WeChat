@@ -89,6 +89,31 @@ exports.reply=function *(next) {
                 hQMusicurl:'http://mpge.5nd.com/2015/2015-9-12/66325/1.mp3',
                 thumbMediaid:data.media_id
             }
+        }else if(content==='8'){
+            var data=yield wechatApi.uploadMaterial('image',__dirname+'/../doc/1.jpeg',{
+                type:'image'
+            })
+
+            //console.log(data)
+
+            reply={
+                type:'image',
+                mediaId:data.media_id
+            }
+        }else if(content==='9'){
+            var data=yield wechatApi.uploadMaterial('video',__dirname+'/../doc/MP40.mp4',{
+                type:'video',
+                description:'{"title":"永久title", "introduction":"永久introduction"}'//这里是字符串。。。干
+            })
+
+            //console.log(data)
+
+            reply={
+                type:'video',
+                mediaId:data.media_id,
+                title:'我是视频',
+                description:'我是描述'
+            }
         }
 
         this.body=reply
