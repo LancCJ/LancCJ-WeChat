@@ -5,7 +5,19 @@ var fs=require('fs')
 var prefix='https://api.weixin.qq.com/cgi-bin/'
 var api={
     accessToken:prefix+'token?grant_type=client_credential',
-    upload:prefix+'media/upload?'
+    temporary:{
+        upload:prefix+'media/upload?'
+    },
+    permanent:{
+        upload:prefix+'media/upload?'
+    },
+    menu:{
+        create:prefix+'menu/create?',
+        get:prefix+'menu/get?',
+        del:prefix+'menu/delete?',
+        current:prefix+'menu/get_current_selfmenu_info?'
+    }
+
 }
 var util=require('./util')
 
@@ -120,7 +132,7 @@ WeChat.prototype.uploadMaterial=function(type,filepath){
         that
             .fetchAccessToken()
             .then(function(data){
-                var url=api.upload+'&access_token='+data.access_token+'&type='+type
+                var url=api.temporary.upload+'&access_token='+data.access_token+'&type='+type
                 request({method:'POST',url:url,formData:form,json:true}).then(function(response){
                     console.log(response.toJSON())
                     var _data=response.toJSON().body

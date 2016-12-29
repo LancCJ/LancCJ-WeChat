@@ -9,7 +9,6 @@ var tpl=heredoc(function(){/*
      <FromUserName><![CDATA[<%= toUsername %>]]></FromUserName>
      <CreateTime><%= createTime %></CreateTime>
      <MsgType><![CDATA[<%= msgType %>]]></MsgType>
-     <MsgId><%= MsgId %></MsgId>
      <% if (msgType === 'text') {%>
      <Content><![CDATA[<%= content %>]]></Content>
      <% }else if (msgType === 'image') {%>

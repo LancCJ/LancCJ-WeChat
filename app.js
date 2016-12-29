@@ -8,5 +8,5 @@ var Constant=require('./common/constant')
 var app=new Koa()
 
 app.use(Validation(config.wechat,weixin.reply))
-app.listen(2222)
+app.listen(1521)
 console.log('LancCJ公众号服务已经启动')

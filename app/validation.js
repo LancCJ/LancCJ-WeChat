@@ -28,11 +28,11 @@ module.exports=function(opts,handler){
             if(sha===signature){
                 this.body=echostr+''
             }else{
-                this.body=Constant.NO_WECHAT_SERVER
+                this.body='您的请求不是来自微信，兄台别搞啦!'
             }
         }else if(this.method==='POST'){
             if(sha!==signature){
-                this.body=Constant.NO_WECHAT_SERVER
+                this.body='您的请求不是来自微信，兄台别搞啦!'
                 return false
             }
 

@@ -58,11 +58,36 @@ exports.reply=function *(next) {
         }else if(content==='5'){
             var data=yield wechatApi.uploadMaterial('image',__dirname+'/../doc/1.jpeg')
 
-            console.log(data)
+            //console.log(data)
 
             reply={
                 type:'image',
                 mediaId:data.media_id
+            }
+        }else if(content==='6'){
+            var data=yield wechatApi.uploadMaterial('video',__dirname+'/../doc/MP40.mp4')
+
+            //console.log(data)
+
+            reply={
+                type:'video',
+                mediaId:data.media_id,
+                title:'我是视频',
+                description:'我是描述'
+            }
+        }else if(content==='7'){
+            var data=yield wechatApi.uploadMaterial('image',__dirname+'/../doc/1.jpeg')
+
+            //console.log(data)
+
+            reply={
+                type:'music',
+                mediaId:data.media_id,
+                title:'我是音乐',
+                description:'我是描述',
+                musicUrl:'http://mpge.5nd.com/2015/2015-9-12/66325/1.mp3',
+                hQMusicurl:'http://mpge.5nd.com/2015/2015-9-12/66325/1.mp3',
+                thumbMediaid:data.media_id
             }
         }
 
