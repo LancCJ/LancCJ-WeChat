@@ -7,12 +7,18 @@ var prefix='https://api.weixin.qq.com/cgi-bin/'
 var api={
     accessToken:prefix+'token?grant_type=client_credential',
     temporary:{
-        upload:prefix+'media/upload?'
+        upload:prefix+'media/upload?',
+        fetch:prefix+'media/get?'
     },
     permanent:{
         upload:prefix+'material/add_material?',
         uploadNews:prefix+'material/add_news?',
-        uploadNewsPic:prefix+'material/uploadimg?'
+        uploadNewsPic:prefix+'material/uploadimg?',
+        fetch:prefix+'material/get_material?',
+        del:prefix+'material/del_material?',
+        update:prefix+'material/update_news?',
+        count:prefix+'material/get_materialcount?',
+        batch:prefix+'material/batchget_materialcount?'
     },
     menu:{
         create:prefix+'menu/create?',
@@ -165,7 +171,7 @@ WeChat.prototype.uploadMaterial=function(type,material,permanent){
                     options.formData=form
                 }
                 request(options).then(function(response){
-                    console.log(response.toJSON())
+                   // console.log(response.toJSON())
                     var _data=response.toJSON().body
 
                     if(_data){
@@ -181,5 +187,193 @@ WeChat.prototype.uploadMaterial=function(type,material,permanent){
 
     })
 }
+
+
+WeChat.prototype.fetchMaterial=function(media_id,type,permanent){
+    var that=this
+    var form={}
+    var fetchUrl=api.temporary.fetch
+    if(permanent){
+        fetchUrl=api.permanent.fetch
+
+    }
+
+    return new Promise(function(resolve,reject){
+        that
+            .fetchAccessToken()
+            .then(function(data){
+                var url=fetchUrl+'&access_token='+data.access_token+'&media_id='+media_id
+                if(!permanent && type==='video'){
+                    url=url.replace("https://","http://")
+                    url+='&type='+type
+                }
+                resolve(url)
+            })
+    })
+}
+
+
+WeChat.prototype.delMaterial=function(media_id){
+    var that=this
+    var form={
+        media_id:media_id
+    }
+    var delUrl=api.permanent.del
+
+    return new Promise(function(resolve,reject){
+        that
+            .fetchAccessToken()
+            .then(function(data){
+                var url=delUrl+'&access_token='+data.access_token+'&media_id='+media_id
+
+                var options={
+                    method:'POST',
+                    url:url,
+                    json:true
+
+                }
+
+                options.body=form
+
+                request(options).then(function(response){
+                   // console.log(response.toJSON())
+                    var _data=response.toJSON().body
+
+                    if(_data){
+                        resolve(_data)
+                    }else{
+                        throw new Error('删除素材失败!')
+                    }
+                })
+                    .catch(function(err){
+                        reject(err)
+                    })
+            })
+    })
+}
+
+
+WeChat.prototype.updateMaterial=function(media_id,news){
+    var that=this
+    var form={
+        media_id:media_id
+    }
+
+    _.extend(form,news)
+
+    var updateUrl=api.permanent.update
+
+    return new Promise(function(resolve,reject){
+        that
+            .fetchAccessToken()
+            .then(function(data){
+                var url=updateUrl+'&access_token='+data.access_token+'&media_id='+media_id
+
+                var options={
+                    method:'POST',
+                    url:url,
+                    json:true
+
+                }
+
+                options.body=form
+
+                request(options).then(function(response){
+                    //console.log(response.toJSON())
+                    var _data=response.toJSON().body
+
+                    if(_data){
+                        resolve(_data)
+                    }else{
+                        throw new Error('更新素材失败!')
+                    }
+                })
+                    .catch(function(err){
+                        reject(err)
+                    })
+            })
+    })
+}
+
+
+
+
+WeChat.prototype.getMaterial=function(){
+    var that=this
+
+
+    var countUrl=api.permanent.count
+
+    return new Promise(function(resolve,reject){
+        that
+            .fetchAccessToken()
+            .then(function(data){
+                var url=countUrl+'&access_token='+data.access_token
+
+                var options={
+                    method:'GET',
+                    url:url,
+                    json:true
+                }
+
+                request(options).then(function(response){
+                    //console.log(response.toJSON())
+                    var _data=response.toJSON().body
+
+                    if(_data){
+                        resolve(_data)
+                    }else{
+                        throw new Error('获取素材数量!')
+                    }
+                })
+                    .catch(function(err){
+                        reject(err)
+                    })
+            })
+    })
+}
+
+
+WeChat.prototype.batchgetMaterial=function(opts){
+    var that=this
+
+    var form={
+        type:opts.type||'iamge',
+        offset:opts.offset||0,
+        count:offset.count||1
+    }
+
+    var batchUrl=api.permanent.batch
+
+    return new Promise(function(resolve,reject){
+        that
+            .fetchAccessToken()
+            .then(function(data){
+                var url=batchUrl+'&access_token='+data.access_token
+
+                var options={
+                    method:'GET',
+                    url:url,
+                    json:true
+                }
+                options.body=form
+
+                request(options).then(function(response){
+                    //console.log(response.toJSON())
+                    var _data=response.toJSON().body
+
+                    if(_data){
+                        resolve(_data)
+                    }else{
+                        throw new Error('获取素材数量!')
+                    }
+                })
+                    .catch(function(err){
+                        reject(err)
+                    })
+            })
+    })
+}
+
 
 module.exports=WeChat
